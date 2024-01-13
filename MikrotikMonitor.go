@@ -180,7 +180,6 @@ func (device *Device) SNMPConfigure() {
 		}
 
 		if device.SNMP.Privacy.Active {
-			usmSecurityParameters.UserName = device.SNMP.Community
 			usmSecurityParameters.PrivacyProtocol = device.SNMP.Privacy.GetProtocol()
 			usmSecurityParameters.PrivacyPassphrase = device.SNMP.Privacy.Passphrase
 		}
