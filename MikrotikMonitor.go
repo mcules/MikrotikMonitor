@@ -13,21 +13,21 @@ import (
 
 type Authentication struct {
 	Active     bool
-	Protocol   string `json:"-"`
-	Passphrase string `json:"-"`
+	Protocol   string
+	Passphrase string
 }
 
 type Privacy struct {
 	Active     bool
-	Protocol   string `json:"-"`
-	Passphrase string `json:"-"`
+	Protocol   string
+	Passphrase string
 }
 
 type SNMP struct {
 	Version        string
-	Community      string `json:"-"`
-	Authentication Authentication
-	Privacy        Privacy
+	Community      string         `json:"-"`
+	Authentication Authentication `json:"-"`
+	Privacy        Privacy        `json:"-"`
 }
 
 type Version struct {
