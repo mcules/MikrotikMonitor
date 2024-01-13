@@ -146,7 +146,14 @@ func (device *Device) GetDevice() error {
 // ResultJson marshals the Devices struct to JSON and returns it as a string.
 // If there is an error during marshaling, the error will be logged and an empty string will be returned.
 func (devices *Devices) ResultJson() string {
-	d, err := json.Marshal(devices)
+	var result struct {
+		Timestamp string
+		Devices   Devices
+	}
+	result.Devices = *devices
+	result.Timestamp = time.Now().Format(time.RFC3339)
+
+	d, err := json.Marshal(result)
 	if err != nil {
 		log.Println(err.Error())
 	}
