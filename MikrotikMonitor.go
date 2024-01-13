@@ -131,7 +131,7 @@ func (device *Device) GetDevice() error {
 			case ".1.3.6.1.4.1.14988.1.1.7.4.0":
 				device.Version.Bootloader = string(variable.Value.([]byte))
 			case ".1.3.6.1.2.1.1.1.0":
-				device.Model = strings.Replace(string(variable.Value.([]byte)), "RouterOS", "", 1)
+				device.Model = strings.Replace(string(variable.Value.([]byte)), "RouterOS ", "", 1)
 			case ".1.3.6.1.2.1.1.5.0":
 				device.Name = string(variable.Value.([]byte))
 			default:
