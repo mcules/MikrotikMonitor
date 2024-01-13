@@ -1,4 +1,4 @@
-module MikrotikMonitor
+module github.com/mcules/MikrotikMonitor
 
 go 1.21
 
