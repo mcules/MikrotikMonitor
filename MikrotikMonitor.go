@@ -159,6 +159,7 @@ func (device *Device) SNMPConfigure() {
 	gosnmp.Default.Timeout = 3 * time.Second // Timeout für SNMP-Anfragen
 	gosnmp.Default.Target = device.Host
 	gosnmp.Default.Community = device.SNMP.Community
+
 	switch device.SNMP.Version {
 	case "2c":
 		gosnmp.Default.Version = gosnmp.Version2c
@@ -166,12 +167,24 @@ func (device *Device) SNMPConfigure() {
 		gosnmp.Default.Version = gosnmp.Version3
 		gosnmp.Default.SecurityModel = gosnmp.UserSecurityModel
 		gosnmp.Default.MsgFlags = gosnmp.AuthPriv
-		gosnmp.Default.SecurityParameters = &gosnmp.UsmSecurityParameters{
-			UserName:                 device.SNMP.Community,
-			AuthenticationProtocol:   device.SNMP.Authentication.GetProtocol(),
-			PrivacyProtocol:          device.SNMP.Privacy.GetProtocol(),
-			AuthenticationPassphrase: device.SNMP.Authentication.Passphrase,
-			PrivacyPassphrase:        device.SNMP.Privacy.Passphrase,
+	}
+
+	if device.SNMP.Authentication.Active || device.SNMP.Privacy.Active {
+		usmSecurityParameters := gosnmp.UsmSecurityParameters{
+			UserName: device.SNMP.Community,
 		}
+
+		if device.SNMP.Authentication.Active {
+			usmSecurityParameters.AuthenticationProtocol = device.SNMP.Authentication.GetProtocol()
+			usmSecurityParameters.AuthenticationPassphrase = device.SNMP.Authentication.Passphrase
+		}
+
+		if device.SNMP.Privacy.Active {
+			usmSecurityParameters.UserName = device.SNMP.Community
+			usmSecurityParameters.PrivacyProtocol = device.SNMP.Privacy.GetProtocol()
+			usmSecurityParameters.PrivacyPassphrase = device.SNMP.Privacy.Passphrase
+		}
+
+		gosnmp.Default.SecurityParameters = &usmSecurityParameters
 	}
 }
